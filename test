@@ -1,0 +1,96 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+// Define a structure for holding information about a travel package
+struct TravelPackage {
+    string destination;
+    double price;
+    int availableSeats;
+};
+
+class TravelAgency {
+private:
+    static const int MAX_PACKAGES = 10;
+    TravelPackage inventory[MAX_PACKAGES];
+    int numPackages;
+
+public:
+    TravelAgency() : numPackages(0) {}
+
+    // Function to add a travel package to the inventory
+    void addPackage(const string& destination, double price, int availableSeats) {
+        if (numPackages < MAX_PACKAGES) {
+            inventory[numPackages].destination = destination;
+            inventory[numPackages].price = price;
+            inventory[numPackages].availableSeats = availableSeats;
+            numPackages++;
+            cout << "Travel package added to inventory.\n";
+        } else {
+            cout << "Inventory is full. Cannot add more packages.\n";
+        }
+    }
+
+    // Function to display all available travel packages
+    void displayInventory() {
+        cout << "Inventory:\n";
+        for (int i = 0; i < numPackages; ++i) {
+            cout << "Destination: " << inventory[i].destination << ", Price: $" << inventory[i].price << ", Available Seats: " << inventory[i].availableSeats << endl;
+        }
+    }
+
+    // Function to compute total revenue
+    double computeTotalRevenue() {
+        double totalRevenue = 0.0;
+        for (int i = 0; i < numPackages; ++i) {
+            totalRevenue += inventory[i].price * inventory[i].availableSeats;
+        }
+        return totalRevenue;
+    }
+};
+
+int main() {
+    TravelAgency agency;
+
+    char choice;
+    do {
+        cout << "Choose an option:\n";
+        cout << "1. Add a travel package to inventory\n";
+        cout << "2. Display inventory\n";
+        cout << "3. Compute total revenue\n";
+        cout << "4. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case '1': {
+                string destination;
+                double price;
+                int availableSeats;
+                cout << "Enter destination: ";
+                cin.ignore(); // Ignore previous newline character
+                getline(cin, destination);
+                cout << "Enter price: ";
+                cin >> price;
+                cout << "Enter available seats: ";
+                cin >> availableSeats;
+                agency.addPackage(destination, price, availableSeats);
+                break;
+            }
+            case '2':
+                agency.displayInventory();
+                break;
+            case '3':
+                cout << "Total revenue: $" << agency.computeTotalRevenue() << endl;
+                break;
+            case '4':
+                cout << "Exiting program.\n";
+                break;
+            default:
+                cout << "Invalid choice. Please enter again.\n";
+        }
+    } while (choice != '4');
+
+    return 0;
+}
